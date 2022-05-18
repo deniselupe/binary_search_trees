@@ -10,10 +10,10 @@ class Node
 end
 
 class Tree
-  attr_accessor :root
+  attr_accessor :array, :root
 
   def initialize(array)
-    @array = array
+    @array = sort(array)
     @root = build_tree(@array, 0, @array.length - 1)
   end
 
@@ -25,8 +25,28 @@ class Tree
     node.right = build_tree(array, mid + 1, max)
     node
   end
+
+  # Perform Merge Sort to sort the array in ascending order
+  def sort(array)
+    return array if array.length <= 1
+    left = array[0...array.length / 2]
+    right = array[array.length / 2..-1]
+    sort_left = sort(left)
+    sort_right = sort(right)
+    merge(sort_left, sort_right)
+  end
+
+  # Perform Merge Sort to sort the array in ascending order
+  def merge(left_arr, right_arr)
+    return left_arr if right_arr.empty?
+    return right_arr if left_arr.empty?
+    smallest_num = left_arr[0] < right_arr[0] ? left_arr.shift : right_arr.shift
+    sorted_arr = merge(left_arr, right_arr)
+    [smallest_num, *sorted_arr]
+  end
 end
 
-arr1 = [1, 2, 3, 4, 5, 6, 7, 8]
+arr1 = [6, 5, 3, 1, 8, 7, 2, 4]
 bst = Tree.new(arr1)
+p "Array is #{bst.array}"
 p bst.root
