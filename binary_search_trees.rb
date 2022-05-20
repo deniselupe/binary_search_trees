@@ -64,9 +64,22 @@ class Tree
     new_arr = remove_arr_dupes(arr)
     sort(new_arr)
   end
+
+  def insert(value, root = @root)
+    if root.nil?
+      root = Node.new(value)
+      return root
+    end
+
+    root.left = insert(value, root.left) if value < root.data
+    root.right = insert(value, root.right) if value > root.data
+    root
+  end
 end
 
 arr1 = [6, 5, 3, 1, 8, 7, 2, 4, 6, 7, 1, 6, 6]
 bst = Tree.new(arr1)
 p "Array is #{bst.array}"
 p bst.root
+p bst.insert(6)
+p bst.insert(9)
