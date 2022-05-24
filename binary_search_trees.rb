@@ -124,23 +124,24 @@ class Tree
 
     root
   end
+
+  def find(value, root = @root)
+    return nil if root.nil?
+
+    if value < root.data
+      find(value, root.left)
+    elsif value > root.data
+      find(value, root.right)
+    elsif value == root.data
+      return root
+    end
+  end
 end
 
 arr1 = [6, 5, 3, 1, 8, 7, 2, 4, 6, 7, 1, 6, 6]
 bst = Tree.new(arr1)
-p "Array is #{bst.array}"
-puts '-------'
-puts 'Original Tree:'
-p bst.root
-puts '-------'
-puts 'Tree when attempting to insert a duplicate number such as 6:'
-p bst.insert(6)
-puts '-------'
-puts 'Tree when attempting to insert a non-duplicate number such as 9:'
-p bst.insert(9)
-puts '-------'
-puts 'Tree when deleting the recently added 9:'
-p bst.delete(9)
-puts '-------'
-puts 'Tree when removing root node 4:'
-p bst.delete(4)
+p bst.find(1)
+p bst.find(2)
+p bst.find(4)
+p bst.find(6)
+p bst.find(7)
