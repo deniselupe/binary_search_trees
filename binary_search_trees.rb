@@ -136,12 +136,30 @@ class Tree
       return root
     end
   end
+
+  # Accepts a block and performs block computation on each node in breadth-first inorder
+  # Otherwise returns an array of node values in breadth-first order if no block is given
+  def breadth_first
+    queue = [@root]
+    result = []
+
+    until queue.empty?
+      current_node = queue.pop()
+      block_given? ? yield(current_node) : result << current_node.data
+      queue.unshift(current_node.left) unless current_node.left.nil?
+      queue.unshift(current_node.right) unless current_node.right.nil?
+    end
+
+    result unless block_given?
+  end
 end
 
 arr1 = [6, 5, 3, 1, 8, 7, 2, 4, 6, 7, 1, 6, 6]
 bst = Tree.new(arr1)
-p bst.find(1)
-p bst.find(2)
-p bst.find(4)
-p bst.find(6)
-p bst.find(7)
+
+bst.breadth_first do |node|
+  puts "Node: #{node.data}"
+  puts "Node's Left: #{node.left.data}" unless node.left.nil?
+  puts "Node's Right: #{node.right.data}" unless node.right.nil?
+  puts '-------'
+end
