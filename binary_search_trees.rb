@@ -152,14 +152,28 @@ class Tree
 
     result unless block_given?
   end
+
+  def preorder
+    stack = [@root]
+    result = []
+
+    until stack.empty?
+      current_node = stack.pop()
+      block_given? ? yield(current_node) : result << current_node.data
+      stack.push(current_node.right) unless current_node.right.nil?
+      stack.push(current_node.left) unless current_node.left.nil?
+    end
+
+    result unless block_given?
+  end
 end
 
 arr1 = [6, 5, 3, 1, 8, 7, 2, 4, 6, 7, 1, 6, 6]
 bst = Tree.new(arr1)
 
-bst.breadth_first do |node|
+bst.preorder do |node|
   puts "Node: #{node.data}"
   puts "Node's Left: #{node.left.data}" unless node.left.nil?
   puts "Node's Right: #{node.right.data}" unless node.right.nil?
-  puts '-------'
+  puts '---------'
 end
