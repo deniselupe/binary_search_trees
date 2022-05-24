@@ -166,12 +166,36 @@ class Tree
 
     result unless block_given?
   end
+
+  def inorder
+    stack = []
+    result = []
+    current_node = @root
+
+    # Will loop until stack is empty and current_node is nil
+    until stack.empty? && current_node.nil?
+      # when current_node is not nil, push current_node to stack and set current_node to it's left child node
+      if !current_node.nil?
+        stack.push(current_node)
+        current_node = current_node.left
+      # if current_node is nil, set current_node to last element in stack array
+      # push the new current_node value to the result array
+      # then set current_node to its right child node
+      else
+        current_node = stack.pop()
+        block_given? ? yield(current_node) : result << current_node.data
+        current_node = current_node.right
+      end
+    end
+
+    result unless block_given?
+  end
 end
 
 arr1 = [6, 5, 3, 1, 8, 7, 2, 4, 6, 7, 1, 6, 6]
 bst = Tree.new(arr1)
 
-bst.preorder do |node|
+bst.inorder do |node|
   puts "Node: #{node.data}"
   puts "Node's Left: #{node.left.data}" unless node.left.nil?
   puts "Node's Right: #{node.right.data}" unless node.right.nil?
