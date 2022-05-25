@@ -190,12 +190,34 @@ class Tree
 
     result unless block_given?
   end
+
+  def postorder
+    stack = [@root]
+    result = []
+
+    until stack.empty?
+      current_node = stack.pop()
+      result << current_node
+      stack.push(current_node.left) unless current_node.left.nil?
+      stack.push(current_node.right) unless current_node.right.nil?
+    end
+
+    result = result.reverse
+
+    if block_given?
+      result.each do |node|
+        yield(node)
+      end
+    else
+      result.map { |node| node.data }
+    end
+  end
 end
 
 arr1 = [6, 5, 3, 1, 8, 7, 2, 4, 6, 7, 1, 6, 6]
 bst = Tree.new(arr1)
 
-bst.inorder do |node|
+bst.postorder do |node|
   puts "Node: #{node.data}"
   puts "Node's Left: #{node.left.data}" unless node.left.nil?
   puts "Node's Right: #{node.right.data}" unless node.right.nil?
