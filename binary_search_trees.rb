@@ -196,12 +196,14 @@ class Tree
     result = []
 
     until stack.empty?
+      # node values will be appended to the result array backwards <root><right><left>
       current_node = stack.pop()
       result << current_node
       stack.push(current_node.left) unless current_node.left.nil?
       stack.push(current_node.right) unless current_node.right.nil?
     end
 
+    # afterwards the result array will be reversed so that nodes are in <left><right><root> order
     result = result.reverse
 
     if block_given?
@@ -212,14 +214,24 @@ class Tree
       result.map { |node| node.data }
     end
   end
+
+  def height(root = @root, count = -1)
+    # When node is nil, return count provided in method call
+    return count if root.nil?
+
+    # When node is not nil, add 1 to the count in method call
+    count += 1
+
+    left = height(root.left, count)
+    right = height(root.right, count)
+
+    # After obtaining he counts of both left and right subtrees, compare to see which of the two is biggest
+    # Return the biggest count which represents longest distance from root node
+    bigger_num = left > right ? left : right
+  end
 end
 
 arr1 = [6, 5, 3, 1, 8, 7, 2, 4, 6, 7, 1, 6, 6]
 bst = Tree.new(arr1)
 
-bst.postorder do |node|
-  puts "Node: #{node.data}"
-  puts "Node's Left: #{node.left.data}" unless node.left.nil?
-  puts "Node's Right: #{node.right.data}" unless node.right.nil?
-  puts '---------'
-end
+p bst.height()
