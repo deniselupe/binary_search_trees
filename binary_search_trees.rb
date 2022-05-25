@@ -229,9 +229,31 @@ class Tree
     # Return the biggest count which represents longest distance from root node
     bigger_num = left > right ? left : right
   end
+
+  # using similar logic to find(), will count the number of nodes traversed
+  # from root node to the given node being searched
+  def depth(node, root = @root, count = -1)
+    # returns nil for nodes that do not exist in the binary search tree
+    return nil if root.nil?
+
+    count += 1
+
+    if node < root.data
+      # will only call depth() on root.left if node is less than root.data
+      depth(node, root.left, count)
+    elsif node > root.data
+      # will only call depth() on root.right if node is more than root.data
+      depth(node, root.right, count)
+    elsif node == root.data
+      return count
+    end
+  end
 end
 
 arr1 = [6, 5, 3, 1, 8, 7, 2, 4, 6, 7, 1, 6, 6]
 bst = Tree.new(arr1)
 
-p bst.height()
+p bst.depth(8) #=> finding depth for node 8
+# inserts 9 which gets added to the right of node 8
+bst.insert(9)
+p bst.depth(9) #=> finding depth for node 9
