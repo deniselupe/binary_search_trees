@@ -247,9 +247,23 @@ class Tree
       return count
     end
   end
+
+  def balanced?(root = @root)
+    # returns true when method finally traverses to a node that is nil
+    return true if root.nil?
+
+    # otherwise, collect the heigh of the node's left and right subtrees
+    left = height(root.left)
+    right = height(root.right)
+
+    # returns true if difference between left and right subtree heights is less than or equal to 1
+    # and both left and right subtree nodes are also balanced
+    # otherwise false is returned
+    (left - right).abs <= 1 && balanced?(root.left) && balanced?(root.right)
+  end
 end
 
 arr1 = [6, 5, 3, 1, 8, 7, 2, 4, 6, 7, 1, 6, 6]
 bst = Tree.new(arr1)
 
-puts "Height for Root Node 4 is #{bst.height}"
+puts "BST Balanced?: #{bst.balanced?}"
