@@ -215,19 +215,18 @@ class Tree
     end
   end
 
-  def height(root = @root, count = -1)
-    # When node is nil, return count provided in method call
-    return count if root.nil?
+  def height(root = @root)
+    # returns -1 if root is nil
+    return -1 if root.nil?
 
-    # When node is not nil, add 1 to the count in method call
-    count += 1
+    left = height(root.left)
+    right = height(root.right)
 
-    left = height(root.left, count)
-    right = height(root.right, count)
-
-    # After obtaining he counts of both left and right subtrees, compare to see which of the two is biggest
-    # Return the biggest count which represents longest distance from root node
-    bigger_num = left > right ? left : right
+    # after collecting heights of left and right subtrees
+    # assign the bigger of the two values to variable biggest_num
+    # add 1 to biggest_num to return actual height for node
+    biggest_num = left > right ? left : right
+    biggest_num += 1
   end
 
   # using similar logic to find(), will count the number of nodes traversed
@@ -253,7 +252,4 @@ end
 arr1 = [6, 5, 3, 1, 8, 7, 2, 4, 6, 7, 1, 6, 6]
 bst = Tree.new(arr1)
 
-p bst.depth(8) #=> finding depth for node 8
-# inserts 9 which gets added to the right of node 8
-bst.insert(9)
-p bst.depth(9) #=> finding depth for node 9
+puts "Height for Root Node 4 is #{bst.height}"
