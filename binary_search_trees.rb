@@ -261,9 +261,59 @@ class Tree
     # otherwise false is returned
     (left - right).abs <= 1 && balanced?(root.left) && balanced?(root.right)
   end
+
+  def rebalance
+    # just return nil if the tree is already balanced
+    return nil if balanced?
+
+    # otherwise, recreate a balanced binary search tree
+    new_arr = inorder
+    new_tree = build_tree(new_arr, 0, new_arr.length - 1)
+    @root = new_tree
+  end
 end
 
 arr1 = [6, 5, 3, 1, 8, 7, 2, 4, 6, 7, 1, 6, 6]
 bst = Tree.new(arr1)
 
-puts "BST Balanced?: #{bst.balanced?}"
+# What the Binary Search Tree looks like:
+#     4
+#    / \
+#   2   6
+#  /\   /\
+# 1  3 5  7
+#          \
+#           8
+
+puts "Tree Balanced Before Nine?: #{bst.balanced?}"
+
+# creating a new node nine
+nine = Node.new(9)
+
+# adding nine node to eight node's right subtree
+# this will make the tree unbalanced
+bst.root.right.right.right.right = nine
+
+# What the Binary Search Tree looks like after adding nine:
+#     4
+#    / \
+#   2   6
+#  /\   /\
+# 1  3 5  7
+#          \
+#           8
+#            \
+#             9
+
+puts "Tree Balanced After Nine?: #{bst.balanced?}"
+bst.rebalance
+puts "Tree Balanced After Rebalance?: #{bst.balanced?}"
+
+# What the Binary Search Tree looks like after rebalance:
+#     5
+#    / \
+#   2   7
+#  /\   /\
+# 1  3 6  8
+#     \    \
+#      4    9
