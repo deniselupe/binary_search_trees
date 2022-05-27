@@ -271,49 +271,137 @@ class Tree
     new_tree = build_tree(new_arr, 0, new_arr.length - 1)
     @root = new_tree
   end
+
+  # pretty printing method to help visualize Binary Search Tree
+  def pretty_print(node = @root, prefix = '', is_left = true)
+    pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
+    puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
+    pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left
+  end
 end
 
-arr1 = [6, 5, 3, 1, 8, 7, 2, 4, 6, 7, 1, 6, 6]
+# Create a Binary Search Tree with an Array of 15 random numbers between 1 and 100
+arr1 = [40, 16, 75, 3, 5, 8, 27, 35, 39, 42, 57, 67, 77, 85, 86]
 bst = Tree.new(arr1)
 
-# What the Binary Search Tree looks like:
-#     4
-#    / \
-#   2   6
-#  /\   /\
-# 1  3 5  7
-#          \
-#           8
+# pretty print the binary search tree
+puts "This is our Binary Search Tree:"
+bst.pretty_print
+puts "\n============================\n"
 
-puts "Tree Balanced Before Nine?: #{bst.balanced?}"
+# Binary Search Tree looks like this
 
-# creating a new node nine
-nine = Node.new(9)
+# │           ┌── 86
+# │       ┌── 85
+# │       │   └── 77
+# │   ┌── 75
+# │   │   │   ┌── 67
+# │   │   └── 57
+# │   │       └── 42
+# └── 40
+#     │       ┌── 39
+#     │   ┌── 35
+#     │   │   └── 27
+#     └── 16
+#         │   ┌── 8
+#         └── 5
+#             └── 3
 
-# adding nine node to eight node's right subtree
-# this will make the tree unbalanced
-bst.root.right.right.right.right = nine
+# determine balanced, it will return as true
+puts "\nIs BST Balanced: #{bst.balanced?}"
+puts "\n============================\n"
 
-# What the Binary Search Tree looks like after adding nine:
-#     4
-#    / \
-#   2   6
-#  /\   /\
-# 1  3 5  7
-#          \
-#           8
-#            \
-#             9
+# print level-order (breadth-first traversal) list of elements
+print "\nLevel Order List: "
+p bst.breadth_first
 
-puts "Tree Balanced After Nine?: #{bst.balanced?}"
+# print preorder list of elements
+print 'Preorder List: '
+p bst.preorder
+
+# print inorder list of elements
+print 'Inorder List: '
+p bst.inorder
+
+# print postorder list of elements
+print 'Postorder List: '
+p bst.postorder
+puts "\n============================\n"
+
+# unbalance the tree by insert multiple nodes of number less than 100
+bst.insert(87)
+bst.insert(88)
+puts "\nInserting 2 new nodes, 87 and 88. This is what the tree looks like now:"
+bst.pretty_print
+puts "\n============================\n"
+
+# Binary Search Tree now looks like this
+
+# │                   ┌── 88
+# │               ┌── 87
+# │           ┌── 86
+# │       ┌── 85
+# │       │   └── 77
+# │   ┌── 75
+# │   │   │   ┌── 67
+# │   │   └── 57
+# │   │       └── 42
+# └── 40
+#     │       ┌── 39
+#     │   ┌── 35
+#     │   │   └── 27
+#     └── 16
+#         │   ┌── 8
+#         └── 5
+#             └── 3
+
+# confirm if tree is now unbalanced, it will return as false
+puts "\nIs BST Balanced: #{bst.balanced?}"
+puts "\n============================\n"
+
+# rebalance the tree so that it becomes balanced once more
 bst.rebalance
-puts "Tree Balanced After Rebalance?: #{bst.balanced?}"
+puts "\nThis is what the Binary Search Tree looks like now after a rebalance:"
+bst.pretty_print
+puts "\n============================\n"
 
-# What the Binary Search Tree looks like after rebalance:
-#     5
-#    / \
-#   2   7
-#  /\   /\
-# 1  3 6  8
-#     \    \
-#      4    9
+# Binary Search Tree looks like this after the rebalance is performed
+
+# │               ┌── 88
+# │           ┌── 87
+# │       ┌── 86
+# │       │   └── 85
+# │   ┌── 77
+# │   │   │   ┌── 75
+# │   │   └── 67
+# │   │       └── 57
+# └── 42
+#     │           ┌── 40
+#     │       ┌── 39
+#     │   ┌── 35
+#     │   │   └── 27
+#     └── 16
+#         │   ┌── 8
+#         └── 5
+#             └── 3
+
+# check if tree is balanced now
+puts "\nIs BST Balanced after rebalance: #{bst.balanced?}"
+puts "\n============================\n"
+
+# print level-order (breadth-first traversal) list of elements
+print "\nLevel Order List: "
+p bst.breadth_first
+
+# print preorder list of elements
+print 'Preorder List: '
+p bst.preorder
+
+# print inorder list of elements
+print 'Inorder List: '
+p bst.inorder
+
+# print postorder list of elements
+print 'Postorder List: '
+p bst.postorder
+puts "\n============================\n"
